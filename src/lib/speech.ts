@@ -1,14 +1,17 @@
+import { getSettings } from "./settings";
+
 export function speak(text: string, onEnd?: () => void) {
   if (!("speechSynthesis" in window)) return;
 
   window.speechSynthesis.cancel();
 
+  const settings = getSettings();
+
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.85; // slower for kids
-  utterance.pitch = 1.1; // slightly higher pitch
+  utterance.rate = settings.voiceSpeed;
+  utterance.pitch = settings.voicePitch;
   utterance.volume = 1;
 
-  // Try to pick a good English voice
   const voices = window.speechSynthesis.getVoices();
   const preferred = voices.find(
     (v) => v.lang.startsWith("en") && v.name.toLowerCase().includes("female")
