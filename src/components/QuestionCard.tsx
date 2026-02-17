@@ -65,13 +65,13 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -60 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="flex flex-col items-center gap-5 w-full max-w-lg mx-auto"
+      className="flex flex-col items-center gap-6 w-full max-w-xl mx-auto px-2"
     >
       {showConfetti && <Confetti />}
 
-      {/* Emoji image */}
+      {/* Big question emoji */}
       <motion.div
-        className="text-[7rem] md:text-[10rem] leading-none"
+        className="text-[8rem] md:text-[12rem] leading-none drop-shadow-lg"
         animate={isCorrect ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
         transition={{ duration: 0.5 }}
       >
@@ -80,24 +80,24 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
 
       {/* Question + speaker button */}
       <div className="flex items-center gap-3">
-        <h2 className="text-xl md:text-2xl font-extrabold text-center text-foreground leading-snug">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-center text-foreground leading-snug">
           {question.question}
         </h2>
         <motion.button
           whileTap={{ scale: 0.85 }}
           onClick={handleReadQuestion}
-          className="shrink-0 p-2 rounded-full bg-primary text-primary-foreground shadow-playful-sm"
+          className="shrink-0 p-3 rounded-full bg-primary text-primary-foreground shadow-playful-sm"
           aria-label="Read question aloud"
         >
-          <Volume2 className="w-6 h-6" />
+          <Volume2 className="w-7 h-7" />
         </motion.button>
       </div>
 
-      {/* Choices - big picture cards */}
+      {/* Answer choices - big picture cards */}
       <div className={`grid gap-4 w-full ${question.choices.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
         {question.choices.map((choice, i) => {
           let btnClass =
-            "rounded-2xl p-5 flex flex-col items-center gap-3 shadow-playful-sm border-3 transition-all min-h-[140px] justify-center ";
+            "rounded-3xl p-6 flex flex-col items-center gap-3 shadow-playful border-4 transition-all min-h-[160px] md:min-h-[200px] justify-center ";
 
           if (selected === null) {
             btnClass += "bg-card text-card-foreground border-transparent hover:border-primary hover:scale-[1.05] cursor-pointer";
@@ -117,8 +117,8 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
               className={btnClass}
               disabled={selected !== null}
             >
-              <span className="text-5xl md:text-7xl leading-none">{choice.emoji}</span>
-              <span className="text-base md:text-lg font-bold leading-tight text-center">{choice.text}</span>
+              <span className="text-6xl md:text-8xl leading-none drop-shadow-md">{choice.emoji}</span>
+              <span className="text-lg md:text-xl font-extrabold leading-tight text-center">{choice.text}</span>
             </motion.button>
           );
         })}
@@ -132,14 +132,14 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col items-center gap-3"
           >
-            <p className="text-xl font-extrabold">
+            <p className="text-2xl font-extrabold">
               {isCorrect ? "🎉 Great job!" : "😊 Try again next time!"}
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleNext}
-              className={`${categoryColor} px-8 py-3 rounded-2xl text-lg font-bold shadow-playful`}
+              className={`${categoryColor} px-10 py-4 rounded-2xl text-xl font-bold shadow-playful`}
             >
               Next →
             </motion.button>
