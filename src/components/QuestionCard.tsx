@@ -71,7 +71,7 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
 
       {/* Emoji image */}
       <motion.div
-        className="text-8xl md:text-9xl"
+        className="text-[7rem] md:text-[10rem] leading-none"
         animate={isCorrect ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
         transition={{ duration: 0.5 }}
       >
@@ -94,10 +94,10 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
       </div>
 
       {/* Choices - big picture cards */}
-      <div className={`grid gap-3 w-full ${question.choices.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+      <div className={`grid gap-4 w-full ${question.choices.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
         {question.choices.map((choice, i) => {
           let btnClass =
-            "rounded-2xl p-4 flex flex-col items-center gap-2 shadow-playful-sm border-3 transition-all ";
+            "rounded-2xl p-5 flex flex-col items-center gap-3 shadow-playful-sm border-3 transition-all min-h-[140px] justify-center ";
 
           if (selected === null) {
             btnClass += "bg-card text-card-foreground border-transparent hover:border-primary hover:scale-[1.05] cursor-pointer";
@@ -117,8 +117,8 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
               className={btnClass}
               disabled={selected !== null}
             >
-              <span className="text-4xl md:text-5xl">{choice.emoji}</span>
-              <span className="text-sm md:text-base font-bold leading-tight text-center">{choice.text}</span>
+              <span className="text-5xl md:text-7xl leading-none">{choice.emoji}</span>
+              <span className="text-base md:text-lg font-bold leading-tight text-center">{choice.text}</span>
             </motion.button>
           );
         })}
