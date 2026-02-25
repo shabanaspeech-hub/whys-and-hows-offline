@@ -27,7 +27,7 @@ const SceneQuizPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col overflow-y-auto">
       {/* Header */}
       <header className="bg-accent text-accent-foreground px-4 py-3 flex items-center gap-3 shadow-playful-sm">
         <motion.button whileTap={{ scale: 0.85 }} onClick={() => navigate("/scenes")} className="p-2 rounded-xl bg-white/20 hover:bg-white/30 transition-colors">
@@ -52,7 +52,7 @@ const SceneQuizPage = () => {
         <motion.img
           src={scene.image}
           alt={scene.title}
-          className="w-full object-contain rounded-3xl shadow-playful border-4 border-card"
+          className="w-full max-h-[35vh] object-cover rounded-3xl shadow-playful border-4 border-card"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
