@@ -52,7 +52,7 @@ const SceneQuizPage = () => {
         <motion.img
           src={scene.image}
           alt={scene.title}
-          className="w-full max-h-[40vh] object-cover rounded-3xl shadow-playful border-4 border-card"
+          className="w-full object-contain rounded-3xl shadow-playful border-4 border-card"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
