@@ -1,8 +1,9 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Volume2 } from "lucide-react";
 import { WHQuestion, saveProgress, getProgress } from "@/data/questions";
 import { speak, stopSpeaking } from "@/lib/speech";
+import { playCorrectSound, playWrongSound, playMilestoneSound, getRandomPraise, getRandomMilestone } from "@/lib/sounds";
 import Confetti from "./Confetti";
 
 interface QuestionCardProps {
@@ -16,6 +17,9 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
   const alreadyDone = !!progress[question.id];
   const [selected, setSelected] = useState<number | null>(alreadyDone ? question.correctIndex : null);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [praise, setPraise] = useState("");
+  const [milestone, setMilestone] = useState("");
+  const correctStreak = useRef(0);
 
   const isCorrect = selected === question.correctIndex;
 
@@ -36,25 +40,46 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
 
   const handleSelect = useCallback(
     (index: number) => {
-      if (selected !== null) return;
-      setSelected(index);
-      const choice = question.choices[index];
+      if (selected !== null && isCorrect) return; // already correct, locked
+
       if (index === question.correctIndex) {
+        setSelected(index);
         saveProgress(question.id);
         setShowConfetti(true);
-        speak(`${choice.text}! Great job! That's correct!`);
+        playCorrectSound();
+        const p = getRandomPraise();
+        setPraise(p);
+
+        correctStreak.current += 1;
+        if (correctStreak.current > 0 && correctStreak.current % 3 === 0) {
+          const m = getRandomMilestone();
+          setMilestone(m);
+          playMilestoneSound();
+          speak(`${question.choices[index].text}! ${m}`);
+        } else {
+          speak(`${question.choices[index].text}! ${p.replace(/[^\w\s!]/g, "")}`);
+        }
         setTimeout(() => setShowConfetti(false), 2000);
       } else {
-        speak(`${choice.text}. Oops! Try again next time!`);
+        setSelected(index);
+        playWrongSound();
+        speak(`${question.choices[index].text}. Oops! Try again!`);
+        // Allow retry after a short delay
+        setTimeout(() => {
+          setSelected(null);
+          setMilestone("");
+        }, 1500);
       }
     },
-    [selected, question]
+    [selected, isCorrect, question]
   );
 
   const handleNext = () => {
     stopSpeaking();
     setSelected(null);
     setShowConfetti(false);
+    setPraise("");
+    setMilestone("");
     onNext();
   };
 
@@ -101,21 +126,21 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
 
           if (selected === null) {
             btnClass += "bg-card text-card-foreground border-transparent hover:border-primary hover:scale-[1.05] cursor-pointer";
-          } else if (i === question.correctIndex) {
+          } else if (i === question.correctIndex && isCorrect) {
             btnClass += "bg-success text-white border-success scale-[1.05]";
-          } else if (i === selected) {
+          } else if (i === selected && !isCorrect) {
             btnClass += "bg-destructive text-white border-destructive animate-wiggle";
           } else {
-            btnClass += "bg-muted text-muted-foreground border-transparent opacity-40";
+            btnClass += "bg-card text-card-foreground border-transparent opacity-40";
           }
 
           return (
             <motion.button
               key={i}
-              whileTap={selected === null ? { scale: 0.9 } : {}}
+              whileTap={!isCorrect ? { scale: 0.9 } : {}}
               onClick={() => handleSelect(i)}
               className={btnClass}
-              disabled={selected !== null}
+              disabled={selected !== null && isCorrect}
             >
               <span className="text-6xl md:text-8xl leading-none drop-shadow-md">{choice.emoji}</span>
               <span className="text-lg md:text-xl font-extrabold leading-tight text-center">{choice.text}</span>
@@ -126,15 +151,22 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
 
       {/* Feedback & Next */}
       <AnimatePresence>
-        {selected !== null && (
+        {selected !== null && isCorrect && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col items-center gap-3"
           >
-            <p className="text-2xl font-extrabold">
-              {isCorrect ? "🎉 Great job!" : "😊 Try again next time!"}
-            </p>
+            <p className="text-2xl font-extrabold">{praise}</p>
+            {milestone && (
+              <motion.p
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-lg font-bold text-primary"
+              >
+                {milestone}
+              </motion.p>
+            )}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -143,6 +175,16 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
             >
               Next →
             </motion.button>
+          </motion.div>
+        )}
+        {selected !== null && !isCorrect && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="flex flex-col items-center gap-3"
+          >
+            <p className="text-2xl font-extrabold">😊 Try again!</p>
           </motion.div>
         )}
       </AnimatePresence>
