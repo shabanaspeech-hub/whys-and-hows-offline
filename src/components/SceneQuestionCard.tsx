@@ -1,8 +1,9 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Volume2 } from "lucide-react";
 import { SceneQuestion, saveSceneAnswer, getSceneProgress } from "@/data/scenes";
 import { speak, stopSpeaking } from "@/lib/speech";
+import { playCorrectSound, playWrongSound, playMilestoneSound, getRandomPraise, getRandomMilestone } from "@/lib/sounds";
 import Confetti from "./Confetti";
 
 interface SceneQuestionCardProps {
@@ -17,6 +18,9 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
   const alreadyDone = !!progress[sceneId]?.[questionIndex];
   const [selected, setSelected] = useState<number | null>(alreadyDone ? question.correctIndex : null);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [praise, setPraise] = useState("");
+  const [milestone, setMilestone] = useState("");
+  const correctStreak = useRef(0);
 
   const isCorrect = selected === question.correctIndex;
 
@@ -26,23 +30,44 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
   }, [question.question, questionIndex]);
 
   const handleSelect = useCallback((index: number) => {
-    if (selected !== null) return;
-    setSelected(index);
-    const choice = question.choices[index];
+    if (selected !== null && isCorrect) return; // already correct, locked
+    
     if (index === question.correctIndex) {
+      setSelected(index);
       saveSceneAnswer(sceneId, questionIndex);
       setShowConfetti(true);
-      speak(`${choice.text}! Great job!`);
+      playCorrectSound();
+      const p = getRandomPraise();
+      setPraise(p);
+      
+      correctStreak.current += 1;
+      if (correctStreak.current > 0 && correctStreak.current % 3 === 0) {
+        const m = getRandomMilestone();
+        setMilestone(m);
+        playMilestoneSound();
+        speak(`${question.choices[index].text}! ${m}`);
+      } else {
+        speak(`${question.choices[index].text}! ${p.replace(/[^\w\s!]/g, "")}`);
+      }
       setTimeout(() => setShowConfetti(false), 2000);
     } else {
-      speak(`${choice.text}. Oops! Try again next time!`);
+      setSelected(index);
+      playWrongSound();
+      speak(`${question.choices[index].text}. Oops! Try again!`);
+      // Allow retry after a short delay
+      setTimeout(() => {
+        setSelected(null);
+        setMilestone("");
+      }, 1500);
     }
-  }, [selected, question, sceneId, questionIndex]);
+  }, [selected, isCorrect, question, sceneId, questionIndex]);
 
   const handleNext = () => {
     stopSpeaking();
     setSelected(null);
     setShowConfetti(false);
+    setPraise("");
+    setMilestone("");
     onNext();
   };
 
@@ -76,15 +101,15 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
           let cls = "rounded-3xl p-5 flex flex-col items-center gap-2 shadow-playful border-4 transition-all min-h-[130px] justify-center ";
           if (selected === null) {
             cls += "bg-card text-card-foreground border-transparent hover:border-primary hover:scale-[1.05] cursor-pointer";
-          } else if (i === question.correctIndex) {
+          } else if (i === question.correctIndex && isCorrect) {
             cls += "bg-success text-white border-success scale-[1.05]";
-          } else if (i === selected) {
+          } else if (i === selected && !isCorrect) {
             cls += "bg-destructive text-white border-destructive animate-wiggle";
           } else {
-            cls += "bg-muted text-muted-foreground border-transparent opacity-40";
+            cls += "bg-card text-card-foreground border-transparent opacity-40";
           }
           return (
-            <motion.button key={i} whileTap={selected === null ? { scale: 0.9 } : {}} onClick={() => handleSelect(i)} className={cls} disabled={selected !== null}>
+            <motion.button key={i} whileTap={!isCorrect ? { scale: 0.9 } : {}} onClick={() => handleSelect(i)} className={cls} disabled={selected !== null && isCorrect}>
               <span className="text-5xl md:text-6xl leading-none">{choice.emoji}</span>
               <span className="text-sm md:text-base font-bold text-center">{choice.text}</span>
             </motion.button>
@@ -94,12 +119,26 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
 
       {/* Feedback */}
       <AnimatePresence>
-        {selected !== null && (
+        {selected !== null && isCorrect && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center gap-2">
-            <p className="text-xl font-extrabold">{isCorrect ? "🎉 Great job!" : "😊 Try again next time!"}</p>
+            <p className="text-xl font-extrabold">{praise}</p>
+            {milestone && (
+              <motion.p 
+                initial={{ opacity: 0, scale: 0.8 }} 
+                animate={{ opacity: 1, scale: 1 }} 
+                className="text-lg font-bold text-primary"
+              >
+                {milestone}
+              </motion.p>
+            )}
             <motion.button whileTap={{ scale: 0.95 }} onClick={handleNext} className="bg-primary text-primary-foreground px-8 py-3 rounded-2xl text-lg font-bold shadow-playful">
               Next →
             </motion.button>
+          </motion.div>
+        )}
+        {selected !== null && !isCorrect && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex flex-col items-center gap-2">
+            <p className="text-xl font-extrabold">😊 Try again!</p>
           </motion.div>
         )}
       </AnimatePresence>
