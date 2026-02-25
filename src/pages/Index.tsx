@@ -31,6 +31,9 @@ const Index = () => {
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
           className="text-center"
         >
+          <p className="text-sm text-muted-foreground font-bold mb-1">
+            Developed by Speech Language Therapist Shabana Tariq
+          </p>
           <h1 className="text-4xl md:text-5xl font-black text-foreground">
             🗣️ WH Questions
           </h1>
