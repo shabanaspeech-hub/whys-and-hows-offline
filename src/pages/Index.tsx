@@ -10,7 +10,7 @@ const Index = () => {
   const settings = getSettings();
 
   const enabledCategories = categories.filter((c) =>
-    settings.enabledCategories.includes(c.id)
+  settings.enabledCategories.includes(c.id)
   );
 
   const handleReset = () => {
@@ -29,8 +29,8 @@ const Index = () => {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          className="text-center"
-        >
+          className="text-center">
+
           <p className="text-sm text-muted-foreground font-bold mb-1">
             Developed by Speech Language Therapist Shabana Tariq
           </p>
@@ -49,8 +49,8 @@ const Index = () => {
             transition={{ delay: 0.3 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => navigate("/settings")}
-            className="inline-flex items-center gap-2 bg-card text-foreground px-5 py-2.5 rounded-2xl shadow-playful-sm font-bold text-base hover:scale-[1.03] transition-transform"
-          >
+            className="inline-flex items-center gap-2 bg-card text-foreground px-5 py-2.5 rounded-2xl shadow-playful-sm font-bold text-base hover:scale-[1.03] transition-transform">
+            Settings
             <Settings className="w-5 h-5" />
             Settings
           </motion.button>
@@ -66,8 +66,8 @@ const Index = () => {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.97 }}
           onClick={() => navigate("/scenes")}
-          className="w-full bg-accent text-accent-foreground rounded-3xl p-5 shadow-playful flex items-center gap-4"
-        >
+          className="w-full bg-accent text-accent-foreground rounded-3xl p-5 shadow-playful flex items-center gap-4">
+
           <span className="text-5xl">🖼️</span>
           <div className="text-left flex-1">
             <h2 className="text-xl font-extrabold">Picture Scenes</h2>
@@ -81,14 +81,14 @@ const Index = () => {
       <main className="flex-1 px-4 pb-8 max-w-2xl mx-auto w-full">
         <h3 className="text-lg font-extrabold text-muted-foreground mb-3 text-center">📝 Basic Practice</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {enabledCategories.map((cat, i) => (
-            <CategoryCard
-              key={cat.id}
-              category={cat}
-              index={i}
-              onClick={() => navigate(`/quiz/${cat.id}`)}
-            />
-          ))}
+          {enabledCategories.map((cat, i) =>
+          <CategoryCard
+            key={cat.id}
+            category={cat}
+            index={i}
+            onClick={() => navigate(`/quiz/${cat.id}`)} />
+
+          )}
         </div>
       </main>
 
@@ -97,14 +97,14 @@ const Index = () => {
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={handleReset}
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-semibold px-4 py-2 rounded-xl hover:bg-muted"
-        >
+          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-semibold px-4 py-2 rounded-xl hover:bg-muted">
+
           <RotateCcw className="w-4 h-4" />
           Reset Progress
         </motion.button>
       </footer>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
