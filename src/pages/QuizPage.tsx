@@ -21,13 +21,12 @@ const QuizPage = () => {
     return null;
   }
 
-  const currentQuestion = questions[currentIndex];
+  const currentQuestion = currentIndex >= 0 ? questions[currentIndex] : null;
   const isLastQuestion = currentIndex >= questions.length - 1;
 
   const handleNext = () => {
     if (isLastQuestion) {
-      setCurrentIndex(0);
-      setKey((k) => k + 1);
+      setCurrentIndex(-1); // show completion screen
     } else {
       setCurrentIndex((i) => i + 1);
     }
@@ -80,14 +79,42 @@ const QuizPage = () => {
 
       {/* Question Area */}
       <main className="flex-1 flex items-center justify-center p-4" key={key}>
-        <AnimatePresence mode="wait">
-          <QuestionCard
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onNext={handleNext}
-            categoryColor={catInfo.colorClass}
-          />
-        </AnimatePresence>
+        {currentIndex === -1 ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex flex-col items-center gap-6 text-center"
+          >
+            <span className="text-[8rem]">🎉</span>
+            <h2 className="text-3xl font-extrabold text-foreground">All Done!</h2>
+            <p className="text-lg text-muted-foreground font-semibold">Great job finishing all the questions!</p>
+            <div className="flex gap-4">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleRestart}
+                className={`${catInfo.colorClass} px-8 py-4 rounded-2xl text-xl font-bold shadow-playful`}
+              >
+                🔄 Play Again
+              </motion.button>
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate("/")}
+                className="bg-card text-foreground px-8 py-4 rounded-2xl text-xl font-bold shadow-playful border-4 border-muted"
+              >
+                🏠 Home
+              </motion.button>
+            </div>
+          </motion.div>
+        ) : (
+          <AnimatePresence mode="wait">
+            <QuestionCard
+              key={currentQuestion.id}
+              question={currentQuestion}
+              onNext={handleNext}
+              categoryColor={catInfo.colorClass}
+            />
+          </AnimatePresence>
+        )}
       </main>
     </div>
   );

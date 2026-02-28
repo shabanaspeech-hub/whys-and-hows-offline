@@ -50,7 +50,6 @@ const Index = () => {
             whileTap={{ scale: 0.9 }}
             onClick={() => navigate("/settings")}
             className="inline-flex items-center gap-2 bg-card text-foreground px-5 py-2.5 rounded-2xl shadow-playful-sm font-bold text-base hover:scale-[1.03] transition-transform">
-            Settings
             <Settings className="w-5 h-5" />
             Settings
           </motion.button>
