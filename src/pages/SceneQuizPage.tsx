@@ -20,8 +20,7 @@ const SceneQuizPage = () => {
 
   const handleNext = () => {
     if (isLast) {
-      setCurrentQ(0);
-      setKey((k) => k + 1);
+      setCurrentQ(-1); // show completion screen
     } else {
       setCurrentQ((i) => i + 1);
     }
@@ -63,15 +62,43 @@ const SceneQuizPage = () => {
 
       {/* Question Area */}
       <main className="flex-1 flex items-start justify-center p-4 pt-4" key={key}>
-        <AnimatePresence mode="wait">
-          <SceneQuestionCard
-            key={`${scene.id}-${currentQ}`}
-            sceneId={scene.id}
-            questionIndex={currentQ}
-            question={scene.questions[currentQ]}
-            onNext={handleNext}
-          />
-        </AnimatePresence>
+        {currentQ === -1 ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex flex-col items-center gap-6 text-center py-4"
+          >
+            <span className="text-[6rem]">🎉</span>
+            <h2 className="text-3xl font-extrabold text-foreground">All Done!</h2>
+            <p className="text-lg text-muted-foreground font-semibold">You answered all the questions!</p>
+            <div className="flex gap-4">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => { setCurrentQ(0); setKey((k) => k + 1); }}
+                className="bg-accent text-accent-foreground px-8 py-4 rounded-2xl text-xl font-bold shadow-playful"
+              >
+                🔄 Play Again
+              </motion.button>
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate("/scenes")}
+                className="bg-card text-foreground px-8 py-4 rounded-2xl text-xl font-bold shadow-playful border-4 border-muted"
+              >
+                🖼️ More Scenes
+              </motion.button>
+            </div>
+          </motion.div>
+        ) : (
+          <AnimatePresence mode="wait">
+            <SceneQuestionCard
+              key={`${scene.id}-${currentQ}`}
+              sceneId={scene.id}
+              questionIndex={currentQ}
+              question={scene.questions[currentQ]}
+              onNext={handleNext}
+            />
+          </AnimatePresence>
+        )}
       </main>
 
       {/* Fullscreen overlay */}

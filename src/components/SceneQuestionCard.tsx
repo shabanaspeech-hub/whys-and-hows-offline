@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Volume2 } from "lucide-react";
-import { SceneQuestion, saveSceneAnswer, getSceneProgress } from "@/data/scenes";
+import { SceneQuestion, saveSceneAnswer } from "@/data/scenes";
 import { speak, stopSpeaking } from "@/lib/speech";
 import { playCorrectSound, playWrongSound, playMilestoneSound, getRandomPraise, getRandomMilestone } from "@/lib/sounds";
 import Confetti from "./Confetti";
@@ -14,9 +14,7 @@ interface SceneQuestionCardProps {
 }
 
 const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQuestionCardProps) => {
-  const progress = getSceneProgress();
-  const alreadyDone = !!progress[sceneId]?.[questionIndex];
-  const [selected, setSelected] = useState<number | null>(alreadyDone ? question.correctIndex : null);
+  const [selected, setSelected] = useState<number | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
   const [praise, setPraise] = useState("");
   const [milestone, setMilestone] = useState("");
