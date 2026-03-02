@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Printer } from "lucide-react";
 import { scenes, getSceneCompletionCount } from "@/data/scenes";
+import { printScene } from "@/lib/print";
 
 const ScenesPage = () => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const ScenesPage = () => {
                 className="rounded-3xl overflow-hidden shadow-playful bg-card border-2 border-transparent hover:border-accent transition-all flex flex-col"
               >
                 <img src={scene.image} alt={scene.title} className="w-full h-28 md:h-36 object-cover" />
-                <div className="p-3 text-center">
+                <div className="p-3 text-center relative">
                   <span className="text-lg font-extrabold text-card-foreground">{scene.emoji} {scene.title}</span>
                   <div className="w-full bg-muted rounded-full h-2 mt-2">
                     <motion.div
@@ -47,6 +48,19 @@ const ScenesPage = () => {
                     />
                   </div>
                   <span className="text-xs text-muted-foreground font-bold">{completed}/{total} ⭐</span>
+
+                  {/* Hidden print button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      printScene(scene.id);
+                    }}
+                    className="absolute top-1 right-1 p-1.5 rounded-full bg-muted/60 hover:bg-muted opacity-0 hover:opacity-100 focus:opacity-100 transition-opacity"
+                    title={`Print ${scene.title} worksheet`}
+                    aria-label={`Print ${scene.title} worksheet`}
+                  >
+                    <Printer className="w-3.5 h-3.5 text-muted-foreground" />
+                  </button>
                 </div>
               </motion.button>
             );
