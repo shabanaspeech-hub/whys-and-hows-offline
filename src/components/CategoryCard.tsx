@@ -40,17 +40,18 @@ const CategoryCard = ({ category, onClick, index }: CategoryCardProps) => {
         {completed}/{total} ⭐
       </span>
 
-      {/* Hidden print button */}
+      {/* Print button */}
       <button
         onClick={(e) => {
           e.stopPropagation();
           printCategory(category.id);
         }}
-        className="absolute top-2 right-2 p-1.5 rounded-full bg-white/20 hover:bg-white/40 opacity-0 hover:opacity-100 focus:opacity-100 transition-opacity"
+        className="absolute top-2 right-2 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-background text-foreground hover:bg-background/90 border border-border shadow-playful-sm transition-colors z-10"
         title={`Print ${category.label} worksheet`}
         aria-label={`Print ${category.label} worksheet`}
       >
         <Printer className="w-4 h-4" />
+        <span className="text-xs font-bold">Print</span>
       </button>
     </motion.button>
   );
