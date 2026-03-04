@@ -49,17 +49,18 @@ const ScenesPage = () => {
                   </div>
                   <span className="text-xs text-muted-foreground font-bold">{completed}/{total} ⭐</span>
 
-                  {/* Hidden print button */}
+                  {/* Print button */}
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       printScene(scene.id);
                     }}
-                    className="absolute top-1 right-1 p-1.5 rounded-full bg-muted/60 hover:bg-muted opacity-0 hover:opacity-100 focus:opacity-100 transition-opacity"
+                    className="absolute top-2 right-2 inline-flex items-center gap-1 px-2 py-1 rounded-full bg-background text-foreground hover:bg-background/90 border border-border shadow-playful-sm transition-colors"
                     title={`Print ${scene.title} worksheet`}
                     aria-label={`Print ${scene.title} worksheet`}
                   >
-                    <Printer className="w-3.5 h-3.5 text-muted-foreground" />
+                    <Printer className="w-3.5 h-3.5" />
+                    <span className="text-[11px] font-bold">Print</span>
                   </button>
                 </div>
               </motion.button>
