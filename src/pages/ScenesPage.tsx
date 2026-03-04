@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Printer } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { scenes, getSceneCompletionCount } from "@/data/scenes";
-import { printScene } from "@/lib/print";
 
 const ScenesPage = () => {
   const navigate = useNavigate();
@@ -49,19 +48,6 @@ const ScenesPage = () => {
                   </div>
                   <span className="text-xs text-muted-foreground font-bold">{completed}/{total} ⭐</span>
 
-                  {/* Print button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      printScene(scene.id);
-                    }}
-                    className="absolute top-2 right-2 inline-flex items-center gap-1 px-2 py-1 rounded-full bg-background text-foreground hover:bg-background/90 border border-border shadow-playful-sm transition-colors"
-                    title={`Print ${scene.title} worksheet`}
-                    aria-label={`Print ${scene.title} worksheet`}
-                  >
-                    <Printer className="w-3.5 h-3.5" />
-                    <span className="text-[11px] font-bold">Print</span>
-                  </button>
                 </div>
               </motion.button>
             );
