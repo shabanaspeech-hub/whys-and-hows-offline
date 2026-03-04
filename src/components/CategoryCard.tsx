@@ -1,7 +1,5 @@
 import { motion } from "framer-motion";
-import { Printer } from "lucide-react";
 import { CategoryInfo, getCategoryProgress } from "@/data/questions";
-import { printCategory } from "@/lib/print";
 
 interface CategoryCardProps {
   category: CategoryInfo;
@@ -40,19 +38,6 @@ const CategoryCard = ({ category, onClick, index }: CategoryCardProps) => {
         {completed}/{total} ⭐
       </span>
 
-      {/* Print button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          printCategory(category.id);
-        }}
-        className="absolute top-2 right-2 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-background text-foreground hover:bg-background/90 border border-border shadow-playful-sm transition-colors z-10"
-        title={`Print ${category.label} worksheet`}
-        aria-label={`Print ${category.label} worksheet`}
-      >
-        <Printer className="w-4 h-4" />
-        <span className="text-xs font-bold">Print</span>
-      </button>
     </motion.button>
   );
 };
