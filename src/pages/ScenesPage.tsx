@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
-import { scenes, getSceneCompletionCount } from "@/data/scenes";
+import { scenes, getSceneCompletionCount } from "../data/scenes";
 
 const ScenesPage = () => {
   const navigate = useNavigate();
@@ -35,7 +35,12 @@ const ScenesPage = () => {
                 onClick={() => navigate(`/scenes/${scene.id}`)}
                 className="rounded-3xl overflow-hidden shadow-playful bg-card border-2 border-transparent hover:border-accent transition-all flex flex-col"
               >
-                <img src={scene.image} alt={scene.title} className="w-full h-28 md:h-36 object-cover" />
+                <img
+                  src={scene.image}
+                  alt={scene.title}
+                  loading="lazy"
+                  className="w-full h-28 md:h-36 object-cover"
+                />
                 <div className="p-3 text-center relative">
                   <span className="text-lg font-extrabold text-card-foreground">{scene.emoji} {scene.title}</span>
                   <div className="w-full bg-muted rounded-full h-2 mt-2">
@@ -47,7 +52,6 @@ const ScenesPage = () => {
                     />
                   </div>
                   <span className="text-xs text-muted-foreground font-bold">{completed}/{total} ⭐</span>
-
                 </div>
               </motion.button>
             );

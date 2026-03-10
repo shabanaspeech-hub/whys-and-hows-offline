@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Volume2, RotateCcw } from "lucide-react";
-import { categories } from "@/data/questions";
-import { getSettings, saveSettings, AppSettings } from "@/lib/settings";
-import { speak } from "@/lib/speech";
+import { categories } from "../data/questions";
+import { getSettings, saveSettings, AppSettings } from "../lib/settings";
+import { speak } from "../lib/speech";
 
 const SettingsPage = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const SettingsPage = () => {
     const next = current.includes(id)
       ? current.filter((c) => c !== id)
       : [...current, id];
-    if (next.length === 0) return; // must keep at least one
+    if (next.length === 0) return;
     update({ enabledCategories: next });
   };
 
@@ -41,7 +41,6 @@ const SettingsPage = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
       <header className="bg-primary text-primary-foreground px-4 py-4 flex items-center gap-3 shadow-playful-sm">
         <motion.button
           whileTap={{ scale: 0.85 }}
@@ -54,7 +53,6 @@ const SettingsPage = () => {
       </header>
 
       <main className="flex-1 p-4 max-w-lg mx-auto w-full space-y-6 pb-8">
-        {/* Voice Speed */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -78,7 +76,6 @@ const SettingsPage = () => {
           </div>
         </motion.section>
 
-        {/* Voice Pitch */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -103,7 +100,6 @@ const SettingsPage = () => {
           </div>
         </motion.section>
 
-        {/* Test Voice Button */}
         <motion.button
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -116,7 +112,6 @@ const SettingsPage = () => {
           Test Voice
         </motion.button>
 
-        {/* Categories */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -150,7 +145,6 @@ const SettingsPage = () => {
           </div>
         </motion.section>
 
-        {/* Reset */}
         <motion.button
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

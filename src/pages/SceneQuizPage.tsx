@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, RotateCcw, X } from "lucide-react";
-import { scenes } from "@/data/scenes";
-import SceneQuestionCard from "@/components/SceneQuestionCard";
+import { scenes } from "../data/scenes";
+import SceneQuestionCard from "../components/SceneQuestionCard";
 
 const SceneQuizPage = () => {
   const { sceneId } = useParams<{ sceneId: string }>();
@@ -20,7 +20,7 @@ const SceneQuizPage = () => {
 
   const handleNext = () => {
     if (isLast) {
-      setCurrentQ(-1); // show completion screen
+      setCurrentQ(-1);
     } else {
       setCurrentQ((i) => i + 1);
     }
@@ -28,7 +28,6 @@ const SceneQuizPage = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col overflow-y-auto">
-      {/* Header */}
       <header className="bg-accent text-accent-foreground px-4 py-3 flex items-center gap-3 shadow-playful-sm">
         <motion.button whileTap={{ scale: 0.85 }} onClick={() => navigate("/scenes")} className="p-2 rounded-xl bg-white/20 hover:bg-white/30 transition-colors">
           <ArrowLeft className="w-6 h-6" />
@@ -47,11 +46,11 @@ const SceneQuizPage = () => {
         </motion.button>
       </header>
 
-      {/* Scene Image (tappable) */}
       <div className="px-3 pt-3">
         <motion.img
           src={scene.image}
           alt={scene.title}
+          loading="lazy"
           className="w-full max-h-[35vh] object-cover rounded-3xl shadow-playful border-4 border-card cursor-pointer"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -60,7 +59,6 @@ const SceneQuizPage = () => {
         />
       </div>
 
-      {/* Question Area */}
       <main className="flex-1 flex items-start justify-center p-4 pt-4" key={key}>
         {currentQ === -1 ? (
           <motion.div
@@ -101,7 +99,6 @@ const SceneQuizPage = () => {
         )}
       </main>
 
-      {/* Fullscreen overlay */}
       <AnimatePresence>
         {fullscreen && (
           <motion.div

@@ -1,5 +1,5 @@
-import { WHCategory, categories, getQuestionsByCategory } from "@/data/questions";
-import { scenes, Scene } from "@/data/scenes";
+import { WHCategory, categories, getQuestionsByCategory } from "../data/questions";
+import { scenes, Scene } from "../data/scenes";
 
 function openPrintWindow(html: string) {
   const win = window.open("", "_blank");

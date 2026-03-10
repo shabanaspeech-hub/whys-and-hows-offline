@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Volume2 } from "lucide-react";
-import { WHQuestion, saveProgress } from "@/data/questions";
-import { speak, stopSpeaking } from "@/lib/speech";
-import { playCorrectSound, playWrongSound, playMilestoneSound, getRandomPraise, getRandomMilestone } from "@/lib/sounds";
+import { WHQuestion, saveProgress } from "../data/questions";
+import { speak, stopSpeaking } from "../lib/speech";
+import { playCorrectSound, playWrongSound, playMilestoneSound, getRandomPraise, getRandomMilestone } from "../lib/sounds";
 import Confetti from "./Confetti";
 
 interface QuestionCardProps {
@@ -21,7 +21,6 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
 
   const isCorrect = selected === question.correctIndex;
 
-  // Auto-read question when it appears
   useEffect(() => {
     const timer = setTimeout(() => {
       speak(question.question);
@@ -38,7 +37,7 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
 
   const handleSelect = useCallback(
     (index: number) => {
-      if (selected !== null && isCorrect) return; // already correct, locked
+      if (selected !== null && isCorrect) return;
 
       if (index === question.correctIndex) {
         setSelected(index);
@@ -62,7 +61,6 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
         setSelected(index);
         playWrongSound();
         speak(`${question.choices[index].text}. Oops! Try again!`);
-        // Allow retry after a short delay
         setTimeout(() => {
           setSelected(null);
           setMilestone("");
@@ -92,7 +90,6 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
     >
       {showConfetti && <Confetti />}
 
-      {/* Big question emoji */}
       <motion.div
         className="text-[8rem] md:text-[12rem] leading-none drop-shadow-lg"
         animate={isCorrect ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
@@ -101,7 +98,6 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
         {question.image}
       </motion.div>
 
-      {/* Question + speaker button */}
       <div className="flex items-center gap-3">
         <h2 className="text-2xl md:text-3xl font-extrabold text-center text-foreground leading-snug">
           {question.question}
@@ -116,7 +112,6 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
         </motion.button>
       </div>
 
-      {/* Answer choices - big picture cards */}
       <div className={`grid gap-4 w-full ${question.choices.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
         {question.choices.map((choice, i) => {
           let btnClass =
@@ -147,7 +142,6 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
         })}
       </div>
 
-      {/* Feedback & Next */}
       <AnimatePresence>
         {selected !== null && isCorrect && (
           <motion.div

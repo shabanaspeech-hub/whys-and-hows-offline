@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Volume2 } from "lucide-react";
-import { SceneQuestion, saveSceneAnswer } from "@/data/scenes";
-import { speak, stopSpeaking } from "@/lib/speech";
-import { playCorrectSound, playWrongSound, playMilestoneSound, getRandomPraise, getRandomMilestone } from "@/lib/sounds";
+import { SceneQuestion, saveSceneAnswer } from "../data/scenes";
+import { speak, stopSpeaking } from "../lib/speech";
+import { playCorrectSound, playWrongSound, playMilestoneSound, getRandomPraise, getRandomMilestone } from "../lib/sounds";
 import Confetti from "./Confetti";
 
 interface SceneQuestionCardProps {
@@ -28,7 +28,7 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
   }, [question.question, questionIndex]);
 
   const handleSelect = useCallback((index: number) => {
-    if (selected !== null && isCorrect) return; // already correct, locked
+    if (selected !== null && isCorrect) return;
     
     if (index === question.correctIndex) {
       setSelected(index);
@@ -52,7 +52,6 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
       setSelected(index);
       playWrongSound();
       speak(`${question.choices[index].text}. Oops! Try again!`);
-      // Allow retry after a short delay
       setTimeout(() => {
         setSelected(null);
         setMilestone("");
@@ -79,7 +78,6 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
     >
       {showConfetti && <Confetti />}
 
-      {/* Question + speaker */}
       <div className="flex items-center gap-3 px-2">
         <h2 className="text-xl md:text-2xl font-extrabold text-center text-foreground leading-snug">
           {question.question}
@@ -93,7 +91,6 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
         </motion.button>
       </div>
 
-      {/* Answer choices */}
       <div className={`grid gap-3 w-full max-w-md ${question.choices.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
         {question.choices.map((choice, i) => {
           let cls = "rounded-3xl p-5 flex flex-col items-center gap-2 shadow-playful border-4 transition-all min-h-[130px] justify-center ";
@@ -115,7 +112,6 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
         })}
       </div>
 
-      {/* Feedback */}
       <AnimatePresence>
         {selected !== null && isCorrect && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center gap-2">
