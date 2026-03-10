@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CategoryInfo, getCategoryProgress } from "@/data/questions";
+import { CategoryInfo, getCategoryProgress } from "../data/questions";
 
 interface CategoryCardProps {
   category: CategoryInfo;
@@ -25,7 +25,6 @@ const CategoryCard = ({ category, onClick, index }: CategoryCardProps) => {
       <span className="text-2xl font-extrabold tracking-wide">{category.label}</span>
       <span className="text-sm opacity-80 font-semibold">{category.description}</span>
 
-      {/* Progress bar */}
       <div className="w-full mt-2 bg-white/30 rounded-full h-2.5">
         <motion.div
           className="bg-white/80 h-2.5 rounded-full"
@@ -37,7 +36,6 @@ const CategoryCard = ({ category, onClick, index }: CategoryCardProps) => {
       <span className="text-xs opacity-70 font-bold">
         {completed}/{total} ⭐
       </span>
-
     </motion.button>
   );
 };

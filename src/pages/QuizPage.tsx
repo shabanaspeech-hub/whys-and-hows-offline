@@ -2,14 +2,14 @@ import { useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, RotateCcw } from "lucide-react";
-import { categories, getQuestionsByCategory, WHCategory, getCategoryProgress } from "@/data/questions";
-import QuestionCard from "@/components/QuestionCard";
+import { categories, getQuestionsByCategory, WHCategory, getCategoryProgress } from "../data/questions";
+import QuestionCard from "../components/QuestionCard";
 
 const QuizPage = () => {
   const { category } = useParams<{ category: string }>();
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [key, setKey] = useState(0); // force remount on restart
+  const [key, setKey] = useState(0);
 
   const cat = category as WHCategory;
   const catInfo = categories.find((c) => c.id === cat);
@@ -26,7 +26,7 @@ const QuizPage = () => {
 
   const handleNext = () => {
     if (isLastQuestion) {
-      setCurrentIndex(-1); // show completion screen
+      setCurrentIndex(-1);
     } else {
       setCurrentIndex((i) => i + 1);
     }
@@ -39,7 +39,6 @@ const QuizPage = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
       <header className={`${catInfo.colorClass} px-4 py-3 flex items-center gap-3 shadow-playful-sm`}>
         <motion.button
           whileTap={{ scale: 0.85 }}
@@ -48,7 +47,6 @@ const QuizPage = () => {
         >
           <ArrowLeft className="w-6 h-6" />
         </motion.button>
-
         <div className="flex-1">
           <h1 className="text-xl font-extrabold">
             {catInfo.emoji} {catInfo.label} Questions
@@ -66,7 +64,6 @@ const QuizPage = () => {
             </span>
           </div>
         </div>
-
         <motion.button
           whileTap={{ scale: 0.85 }}
           onClick={handleRestart}
@@ -77,7 +74,6 @@ const QuizPage = () => {
         </motion.button>
       </header>
 
-      {/* Question Area */}
       <main className="flex-1 flex items-center justify-center p-4" key={key}>
         {currentIndex === -1 ? (
           <motion.div
