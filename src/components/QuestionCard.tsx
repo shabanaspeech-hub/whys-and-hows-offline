@@ -52,15 +52,16 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
           const m = getRandomMilestone();
           setMilestone(m);
           playMilestoneSound();
-          speak(`${question.choices[index].text}! ${m}`);
+          speak(question.correctFeedback + " " + m.replace(/[^\w\s!]/g, ""));
         } else {
-          speak(`${question.choices[index].text}! ${p.replace(/[^\w\s!]/g, "")}`);
+          // Use the full sentence model feedback for therapy
+          speak(question.correctFeedback);
         }
         setTimeout(() => setShowConfetti(false), 2000);
       } else {
         setSelected(index);
         playWrongSound();
-        speak(`${question.choices[index].text}. Oops! Try again!`);
+        speak("Let's look again! Try another one.");
         setTimeout(() => {
           setSelected(null);
           setMilestone("");
@@ -105,7 +106,7 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
         <motion.button
           whileTap={{ scale: 0.85 }}
           onClick={handleReadQuestion}
-          className="shrink-0 p-3 rounded-full bg-primary text-primary-foreground shadow-playful-sm"
+          className="shrink-0 p-3 rounded-full bg-primary text-primary-foreground shadow-playful-sm min-w-[48px] min-h-[48px] flex items-center justify-center"
           aria-label="Read question aloud"
         >
           <Volume2 className="w-7 h-7" />
@@ -115,7 +116,7 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
       <div className={`grid gap-4 w-full ${question.choices.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
         {question.choices.map((choice, i) => {
           let btnClass =
-            "rounded-3xl p-6 flex flex-col items-center gap-3 shadow-playful border-4 transition-all min-h-[160px] md:min-h-[200px] justify-center ";
+            "rounded-3xl p-6 flex flex-col items-center gap-3 shadow-playful border-4 transition-all min-h-[160px] md:min-h-[200px] justify-center min-w-[48px] ";
 
           if (selected === null) {
             btnClass += "bg-card text-card-foreground border-transparent hover:border-primary hover:scale-[1.05] cursor-pointer";
@@ -150,11 +151,15 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
             className="flex flex-col items-center gap-3"
           >
             <p className="text-2xl font-extrabold">{praise}</p>
+            {/* Full sentence model feedback */}
+            <p className="text-base md:text-lg font-bold text-primary text-center px-4">
+              {question.correctFeedback}
+            </p>
             {milestone && (
               <motion.p
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="text-lg font-bold text-primary"
+                className="text-lg font-bold text-accent"
               >
                 {milestone}
               </motion.p>
@@ -163,7 +168,7 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleNext}
-              className={`${categoryColor} px-10 py-4 rounded-2xl text-xl font-bold shadow-playful`}
+              className={`${categoryColor} px-10 py-4 rounded-2xl text-xl font-bold shadow-playful min-h-[48px]`}
             >
               Next →
             </motion.button>
@@ -176,7 +181,7 @@ const QuestionCard = ({ question, onNext, categoryColor }: QuestionCardProps) =>
             exit={{ opacity: 0 }}
             className="flex flex-col items-center gap-3"
           >
-            <p className="text-2xl font-extrabold">😊 Try again!</p>
+            <p className="text-2xl font-extrabold">👀 Let's look again!</p>
           </motion.div>
         )}
       </AnimatePresence>

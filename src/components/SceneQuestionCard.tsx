@@ -43,15 +43,16 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
         const m = getRandomMilestone();
         setMilestone(m);
         playMilestoneSound();
-        speak(`${question.choices[index].text}! ${m}`);
+        speak(question.correctFeedback + " " + m.replace(/[^\w\s!]/g, ""));
       } else {
-        speak(`${question.choices[index].text}! ${p.replace(/[^\w\s!]/g, "")}`);
+        // Use full sentence model feedback
+        speak(question.correctFeedback);
       }
       setTimeout(() => setShowConfetti(false), 2000);
     } else {
       setSelected(index);
       playWrongSound();
-      speak(`${question.choices[index].text}. Oops! Try again!`);
+      speak("Let's look again! Try another one.");
       setTimeout(() => {
         setSelected(null);
         setMilestone("");
@@ -85,7 +86,7 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
         <motion.button
           whileTap={{ scale: 0.85 }}
           onClick={() => speak(question.question)}
-          className="shrink-0 p-2.5 rounded-full bg-primary text-primary-foreground shadow-playful-sm"
+          className="shrink-0 p-2.5 rounded-full bg-primary text-primary-foreground shadow-playful-sm min-w-[48px] min-h-[48px] flex items-center justify-center"
         >
           <Volume2 className="w-6 h-6" />
         </motion.button>
@@ -93,7 +94,7 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
 
       <div className={`grid gap-3 w-full max-w-md ${question.choices.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
         {question.choices.map((choice, i) => {
-          let cls = "rounded-3xl p-5 flex flex-col items-center gap-2 shadow-playful border-4 transition-all min-h-[130px] justify-center ";
+          let cls = "rounded-3xl p-5 flex flex-col items-center gap-2 shadow-playful border-4 transition-all min-h-[130px] justify-center min-w-[48px] ";
           if (selected === null) {
             cls += "bg-card text-card-foreground border-transparent hover:border-primary hover:scale-[1.05] cursor-pointer";
           } else if (i === question.correctIndex && isCorrect) {
@@ -116,23 +117,27 @@ const SceneQuestionCard = ({ sceneId, questionIndex, question, onNext }: SceneQu
         {selected !== null && isCorrect && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center gap-2">
             <p className="text-xl font-extrabold">{praise}</p>
+            {/* Full sentence model feedback */}
+            <p className="text-base font-bold text-primary text-center px-4">
+              {question.correctFeedback}
+            </p>
             {milestone && (
               <motion.p 
                 initial={{ opacity: 0, scale: 0.8 }} 
                 animate={{ opacity: 1, scale: 1 }} 
-                className="text-lg font-bold text-primary"
+                className="text-lg font-bold text-accent"
               >
                 {milestone}
               </motion.p>
             )}
-            <motion.button whileTap={{ scale: 0.95 }} onClick={handleNext} className="bg-primary text-primary-foreground px-8 py-3 rounded-2xl text-lg font-bold shadow-playful">
+            <motion.button whileTap={{ scale: 0.95 }} onClick={handleNext} className="bg-primary text-primary-foreground px-8 py-3 rounded-2xl text-lg font-bold shadow-playful min-h-[48px]">
               Next →
             </motion.button>
           </motion.div>
         )}
         {selected !== null && !isCorrect && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex flex-col items-center gap-2">
-            <p className="text-xl font-extrabold">😊 Try again!</p>
+            <p className="text-xl font-extrabold">👀 Let's look again!</p>
           </motion.div>
         )}
       </AnimatePresence>
