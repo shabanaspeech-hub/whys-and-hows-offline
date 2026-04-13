@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import spectraLogo from "@/assets/spectra-speech-logo.png";
 import { motion } from "framer-motion";
 import { RotateCcw, Settings, Image } from "lucide-react";
 import CategoryCard from "../components/CategoryCard";
@@ -29,7 +30,8 @@ const Index = () => {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          className="text-center">
+          className="text-center flex flex-col items-center">
+          <img src={spectraLogo} alt="Spectra Speech Logo" className="w-20 h-20 object-contain mb-2" />
           <p className="text-sm text-muted-foreground font-bold mb-1">
             Developed by Speech Language Therapist Shabana Tariq
           </p>
