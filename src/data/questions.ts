@@ -50,19 +50,19 @@ export const questions: WHQuestion[] = [
   },
   {
     id: "who3", category: "who", difficulty: 1,
-    question: "Who takes care of sick people?",
+    question: "Who gives you medicine?",
     image: "🏥",
     choices: [{ text: "Farmer", emoji: "👨‍🌾" }, { text: "Singer", emoji: "🎤" }, { text: "Doctor", emoji: "👨‍⚕️" }],
     correctIndex: 2,
-    correctFeedback: "Yes! A doctor takes care of sick people!",
+    correctFeedback: "Yes! A doctor gives you medicine!",
   },
   {
     id: "who4", category: "who", difficulty: 1,
     question: "Who delivers letters?",
     image: "📬",
-    choices: [{ text: "Mail carrier", emoji: "📮" }, { text: "Police officer", emoji: "👮" }],
+    choices: [{ text: "Postman", emoji: "📮" }, { text: "Police officer", emoji: "👮" }],
     correctIndex: 0,
-    correctFeedback: "That's right! A mail carrier delivers letters!",
+    correctFeedback: "That's right! A postman delivers letters!",
   },
   {
     id: "who5", category: "who", difficulty: 2,
