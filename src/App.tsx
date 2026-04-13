@@ -9,6 +9,7 @@ import SettingsPage from "./pages/SettingsPage";
 import ScenesPage from "./pages/ScenesPage";
 import SceneQuizPage from "./pages/SceneQuizPage";
 import NotFound from "./pages/NotFound";
+import InstallBanner from "./components/InstallBanner";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/scenes/:sceneId" element={<SceneQuizPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <InstallBanner />
       </HashRouter>
     </TooltipProvider>
   </QueryClientProvider>
