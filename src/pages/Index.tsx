@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import spectraLogo from "@/assets/spectra-speech-logo.png";
 import { motion } from "framer-motion";
 import { RotateCcw, Settings, Image } from "lucide-react";
 import CategoryCard from "../components/CategoryCard";
