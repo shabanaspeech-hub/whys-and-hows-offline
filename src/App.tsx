@@ -27,6 +27,7 @@ const App = () => (
           <Route path="/scenes/:sceneId" element={<SceneQuizPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <InstallBanner />
       </HashRouter>
     </TooltipProvider>
   </QueryClientProvider>
