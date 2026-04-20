@@ -150,7 +150,7 @@ export const questions: WHQuestion[] = [
     id: "what7", category: "what", difficulty: 1,
     question: "What do you sit on?",
     image: "💺",
-    choices: [{ text: "Table", emoji: "🪑" }, { text: "Chair", emoji: "💺" }, { text: "Lamp", emoji: "💡" }],
+    choices: [{ text: "Table", emoji: "🍽️" }, { text: "Chair", emoji: "💺" }, { text: "Lamp", emoji: "💡" }],
     correctIndex: 1,
     correctFeedback: "I sit on a chair.",
   },
