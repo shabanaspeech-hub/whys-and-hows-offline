@@ -35,9 +35,14 @@ const Index = () => {
           <p className="text-sm text-muted-foreground font-bold mb-1">
             Developed by Speech Language Therapist Shabana Tariq
           </p>
-          <h1 className="text-4xl md:text-5xl font-black text-foreground">
-            🗣️ WH Questions
-          </h1>
+          <div className="flex flex-col items-center gap-0">
+            <h1 className="text-xl md:text-2xl font-black text-primary">
+              Spectra Speech
+            </h1>
+            <h2 className="text-3xl md:text-4xl font-black text-foreground">
+              🗣️ WH Questions App
+            </h2>
+          </div>
           <p className="text-lg text-muted-foreground font-semibold mt-2">
             Tap a category to start practicing!
           </p>
