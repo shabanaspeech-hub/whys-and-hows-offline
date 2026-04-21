@@ -1,7 +1,7 @@
 {
-  "name": "WH Questions for Kids",
-  "short_name": "WH Questions",
-  "description": "Practice WH questions for speech therapy",
+  "name": "Spectra Speech – WH Questions App (Pilot Version)",
+  "short_name": "Spectra Speech – WH Questions",
+  "description": "Spectra Speech WH Questions App – Practice Who, What, Where, When, Why, How for speech therapy",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#FFF9E6",
