@@ -51,7 +51,7 @@ const SceneQuizPage = () => {
           src={scene.image}
           alt={scene.title}
           loading="lazy"
-          className="mx-auto h-auto max-h-[34vh] w-auto max-w-full object-contain rounded-3xl shadow-playful border-4 border-card bg-card cursor-pointer sm:max-h-[38vh] lg:max-h-[42vh] lg:max-w-5xl"
+          className="mx-auto h-auto max-h-[34vh] w-auto max-w-full object-contain rounded-3xl shadow-playful border-4 border-card bg-card cursor-pointer sm:max-h-none sm:w-[80vw] md:w-[78vw] lg:w-[72vw] xl:w-[68vw] lg:max-w-6xl"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
