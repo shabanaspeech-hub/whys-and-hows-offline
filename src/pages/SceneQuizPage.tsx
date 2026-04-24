@@ -46,12 +46,12 @@ const SceneQuizPage = () => {
         </motion.button>
       </header>
 
-      <div className="px-3 pt-3">
+      <div className="px-3 pt-3 sm:px-5 lg:px-8">
         <motion.img
           src={scene.image}
           alt={scene.title}
           loading="lazy"
-          className="w-full max-h-[35vh] object-cover rounded-3xl shadow-playful border-4 border-card cursor-pointer"
+          className="mx-auto h-auto max-h-[34vh] w-auto max-w-full object-contain rounded-3xl shadow-playful border-4 border-card bg-card cursor-pointer sm:max-h-[38vh] lg:max-h-[42vh] lg:max-w-5xl"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
