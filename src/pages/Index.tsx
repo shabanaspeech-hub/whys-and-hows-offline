@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import spectraLogo from "@/assets/spectra-speech-logo.png";
 import { motion } from "framer-motion";
 import { RotateCcw, Settings, Image } from "lucide-react";
@@ -97,7 +97,7 @@ const Index = () => {
       </main>
 
       {/* Footer */}
-      <footer className="text-center pb-6 px-4">
+      <footer className="text-center pb-6 px-4 flex flex-col items-center gap-2">
         <motion.button
           whileTap={{ scale: 0.9 }}
           onClick={handleReset}
@@ -105,6 +105,12 @@ const Index = () => {
           <RotateCcw className="w-4 h-4" />
           Reset Progress
         </motion.button>
+        <Link
+          to="/privacy"
+          className="text-xs text-muted-foreground hover:text-foreground font-semibold underline"
+        >
+          Privacy Policy
+        </Link>
       </footer>
     </div>
   );
