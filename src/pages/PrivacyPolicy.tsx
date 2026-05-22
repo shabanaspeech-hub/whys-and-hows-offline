@@ -99,10 +99,10 @@ const PrivacyPolicy = () => {
               For questions about this Privacy Policy, please contact:
               <br />
               <a
-                href="mailto:contact@example.com"
+                href="mailto:shabana.speech@gmail.com"
                 className="text-primary font-bold underline"
               >
-                contact@example.com
+                shabana.speech@gmail.com
               </a>
             </p>
             <p className="text-sm text-muted-foreground mt-2">
