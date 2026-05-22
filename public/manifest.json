@@ -1,22 +1,21 @@
 {
+  "id": "/",
   "name": "Spectra Speech – WH Questions App (Pilot Version)",
-  "short_name": "Spectra Speech – WH Questions",
+  "short_name": "Spectra Speech",
   "description": "Spectra Speech WH Questions App – Practice Who, What, Where, When, Why, How for speech therapy",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#FFF9E6",
   "theme_color": "#7C3AED",
-  "orientation": "any",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["education", "kids", "medical"],
   "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
