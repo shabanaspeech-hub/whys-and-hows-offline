@@ -15,7 +15,7 @@ import sceneGarden from "../assets/scenes/scene-garden.jpg";
 import sceneBath from "../assets/scenes/scene-bath.jpg";
 import sceneFirestation from "../assets/scenes/scene-firestation.jpg";
 import scenePicnic from "../assets/scenes/scene-picnic.jpg";
-import scenePetshop from "../assets/scenes/scene-petshop.jpg";
+import scenePetshop from "../assets/scenes/scene-petshop.png";
 import sceneSnow from "../assets/scenes/scene-snow.jpg";
 import sceneBusstop from "../assets/scenes/scene-busstop.jpg";
 
@@ -43,7 +43,7 @@ export interface Scene {
   questions: SceneQuestion[];
 }
 
-export const scenes: Scene[] = [
+const sceneData: Scene[] = [
   {
     id: "park", title: "At the Park", image: scenePark, emoji: "🌳",
     objectTags: [
@@ -510,6 +510,33 @@ export const scenes: Scene[] = [
     ],
   },
 ];
+
+function balanceCorrectAnswerPositions(sceneList: Scene[]): Scene[] {
+  const positionCounts = new Map<number, number>();
+
+  return sceneList.map((scene) => ({
+    ...scene,
+    questions: scene.questions.map((question) => {
+      const choiceCount = question.choices.length;
+      if (choiceCount < 2 || question.correctIndex < 0 || question.correctIndex >= choiceCount) {
+        return question;
+      }
+
+      const seen = positionCounts.get(choiceCount) ?? 0;
+      const targetIndex = seen % choiceCount;
+      positionCounts.set(choiceCount, seen + 1);
+
+      const correctChoice = question.choices[question.correctIndex];
+      if (!correctChoice) return question;
+
+      const choices = question.choices.filter((_, index) => index !== question.correctIndex);
+      choices.splice(targetIndex, 0, correctChoice);
+      return { ...question, choices, correctIndex: targetIndex };
+    }),
+  }));
+}
+
+export const scenes: Scene[] = balanceCorrectAnswerPositions(sceneData);
 
 export function getSceneProgress(): Record<string, Record<number, boolean>> {
   try {
